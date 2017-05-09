@@ -1,0 +1,43 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<
+#define sem 1;
+
+int global = 0;
+int result;
+
+int UP(){
+	sem+1;
+	return sem;
+}
+
+int DOWN (){
+	sem-1;
+	return sem;
+}
+
+void thread1(){
+	result = DOWN();
+	if(result == 0){
+	 global = 10;
+	 printf("teste thread1 %d \n ",global);
+	}
+	UP();
+}
+
+void thread2(){
+	result = DOWN();
+	if(result==0){
+	 global = 11;
+	 printf("teste thread2 %d \n",global);
+	}
+	UP();
+}
+
+int main(){
+	 void* stack;
+	 pid_t pid;
+
+	
+
+}
