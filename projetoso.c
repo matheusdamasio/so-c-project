@@ -41,7 +41,7 @@ int thread2(void* argument){
 
 
 
-int main(){
+int main(){/*
 	 void* stack;
 	 pid_t pid;
      //pid_t pid2;
@@ -57,5 +57,42 @@ int main(){
      printf("Retorno = %d\n",global);
      free(stack);
      printf("Retorno da thread filha e stack liberado.\n Resultado: %d\n",global);
-     return  0;
+     return  0;*/
+
+	 char *texto[8];
+	 int i;
+	 int pid, pid_father, pid_son;
+
+	 pid_father = getpid();
+
+	 texto[0] = "teste de semaforo parte 1";
+	 texto[1] = "teste de semaforo parte 2";
+	 texto[2] = "teste de semaforo parte 3";
+	 texto[3] = "teste de semaforo parte 4";
+	 texto[4] = "teste de semaforo parte 5";
+	 texto[5] = "teste de semaforo parte 6";
+	 texto[6] = "teste de semaforo parte 7";
+	 texto[7] = "teste de semaforo parte 8";
+
+pid_son = fork();
+  pid = (pid_son)? pid_son : pid_father;
+
+printf("Inicio de execucao do processo %d, semaforo %d\n", pid, semid);
+
+
+    while(1)
+  {
+    if (com_semaforo)
+      DOWN(semid); /*   entrada na Regiao Critica */
+    for(i = 0; i < 8; i++)
+    {
+      printf("\n%d: %s", pid, poema[i]);
+      sleep(0.5);
+    }
+    printf("\n\n");
+    if (com_semaforo)
+      UP(semid); /*  saida da Regiao Critica */
+    sleep(2);
+  }
+	 
 }
