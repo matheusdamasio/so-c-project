@@ -15,20 +15,19 @@ int global = 0;
 int result;
 int semid;
 
-int UP(){
-   	sem+1;
-    
+int UP(int semid){
+	semid = sem;
+	sem+1;
 	return sem;
 }
 
-int DOWN (){
-   
+int DOWN (int semid){
+	semid = sem;
 	sem-1;
-	
 	return sem;
 }
 
-int thread1(void* argument){
+/*int thread1(void* argument){
 	result = DOWN();
 	if(result == 0){
 	 global = 41;
@@ -44,10 +43,7 @@ int thread2(void* argument){
 	}
 	UP();
 }
-
-
-
-
+*/
 
 int main(){/*
 	 void* stack;
@@ -94,12 +90,12 @@ printf("Inicio de execucao do processo %d, semaforo %d\n", pid, semid);
     for(i = 0; i < 8; i++)
     {
       printf("\n%d: %s", pid, texto[i]);
-      sleep(.5);
+      //sleep(1);
     }
     printf("\n\n");
     if (com_semaforo)
       UP(semid); /*  saida da Regiao Critica */
-    sleep(2);
+   // sleep(2);
   }
 	 
 }
