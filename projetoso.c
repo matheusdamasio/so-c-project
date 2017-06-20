@@ -1,4 +1,5 @@
 #define _GNU_SOURCE
+#include <unistd.h>
 #include <stdlib.h>
 #include <malloc.h>
 #include <sys/types.h>
@@ -6,19 +7,24 @@
 #include <signal.h>
 #include <sched.h>
 #include <stdio.h>
+#include <sys/ipc.h>
 
 #define sem 1;
 #define FIBER_STACK 1024*64
 int global = 0;
 int result;
+int semid;
 
 int UP(){
-	sem+1;
+   	sem+1;
+    
 	return sem;
 }
 
 int DOWN (){
+   
 	sem-1;
+	
 	return sem;
 }
 
@@ -41,24 +47,25 @@ int thread2(void* argument){
 
 
 
+
+
 int main(){/*
 	 void* stack;
 	 pid_t pid;
      //pid_t pid2;
      stack = malloc (FIBER_STACK);
-
      //printf("clonando a thread");
      pid = clone(&thread1, (char*) stack+FIBER_STACK, SIGCHLD | CLONE_FS | CLONE_FILES | CLONE_SIGHAND | CLONE_VM, 0);
      //printf("clonando a thread novamente");
      pid = clone(&thread2, (char*) stack+FIBER_STACK, SIGCHLD | CLONE_FS | CLONE_FILES | CLONE_SIGHAND | CLONE_VM, 0);
-
      //pid = waitpid(pid,0,0);
      //pid2 = waitpid(pid2, 0 ,0);
      printf("Retorno = %d\n",global);
      free(stack);
      printf("Retorno da thread filha e stack liberado.\n Resultado: %d\n",global);
      return  0;*/
-
+	 int com_semaforo = 0;
+	 int semid;
 	 char *texto[8];
 	 int i;
 	 int pid, pid_father, pid_son;
@@ -86,8 +93,8 @@ printf("Inicio de execucao do processo %d, semaforo %d\n", pid, semid);
       DOWN(semid); /*   entrada na Regiao Critica */
     for(i = 0; i < 8; i++)
     {
-      printf("\n%d: %s", pid, poema[i]);
-      sleep(0.5);
+      printf("\n%d: %s", pid, texto[i]);
+      sleep(.5);
     }
     printf("\n\n");
     if (com_semaforo)
